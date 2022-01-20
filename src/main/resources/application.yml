@@ -5,19 +5,25 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/springbootclass?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: bootuser
+    url: jdbc:mysql://localhost:3306/springbootclass2?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: bootuser2
     password: 1234
   thymeleaf:
     cache: false
+  servlet:
+    multipart:
+      location: C:\Users\exo_g\Documents\SpringBoot\memberBoard\src\main\resources\static\upload
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 20MB
 
 
     #JPA관련 설정, Spring 안에 속해있는 설정이기때문에 반드시 spring 안에 써준다.
-    jpa:
-      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-      show-sql: true
-      hibernate:
-        ddl-auto: update
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+     ddl-auto: update
 
 
 
