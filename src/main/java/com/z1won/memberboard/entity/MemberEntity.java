@@ -76,7 +76,7 @@ public class MemberEntity extends BaseEntity {
         memberEntity.setMemberPassword(memberUpdateDTO.getMemberPassword());
         memberEntity.setMemberName(memberUpdateDTO.getMemberName());
         memberEntity.setMemberPhone(memberUpdateDTO.getMemberPhone());
-        memberEntity.setMemberFilename(memberEntity.getMemberFilename());
+        memberEntity.setMemberFilename(memberUpdateDTO.getMemberFilename());
 
         return memberEntity;
     }

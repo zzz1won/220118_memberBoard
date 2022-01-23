@@ -5,6 +5,57 @@
     <meta charset="UTF-8">
     <title>💕memberBoard_memberupdate💕</title>
 </head>
+ <script src="https://code.jquery.com/jquery-3.6.0.js"></script> <!-- ajax를 위한 jquery -->
+ <script>   //수정 ajax
+ const memberUpdate = () =>  {
+
+     let memberUpdateData = new FormData($('#updateForm')[0]);
+    /*/!* memberUpdateData.append("memberId",$("#member_id").val());
+     memberUpdateData.append("memberEmail", $("#member_email").val());*!/
+     memberUpdateData.append("memberPassword", $("#member_password").val());
+     memberUpdateData.append("memberName", $("#member_name").val());
+     memberUpdateData.append("memberPhone", $("#member_phone").val());*/
+     /*memberUpdateData.append("memberFilename", $("#member_filename")[0]);    //얘는 왜 다를까?*/
+
+     const id = document.querySelector('#member_id').value;
+     console.log(memberUpdateData);
+/*     const reqUrl = "/member";*/
+
+        $.ajax({
+            type: 'post',
+            url : '/member/'+id,
+            processData : false,
+            contentType : false,
+            /*enctype : 'multipart/form-data',*/
+            cache : false,
+            /*timeout : 300000,*/
+            data: memberUpdateData,
+            success: function ()    {
+                location.href = "/member/";
+                //ajax에 이상이 없는지 확인하는 console.log
+                console.log("memberUpdate 함수 호출!")
+                /*document.updateForm.submit();*/
+            },
+            error : function () {
+                alert("ajax 실패")
+                //실행하려면
+            }
+        });
+
+     // 값을 담긴 했는데 넘어가는 게 없어서 controller로 가지 않는다??
+
+
+     // boardUpdate부분 선생님께 여쭤보기, 그냥 쓰여지는 게 달랐던건가?
+     // const inputPw = document.getElementById("member_password").value; //지금 입력하는 비번, 비번이 맞으면 수정이 된다~
+
+
+
+ }
+
+ </script>
+
+<!-- 파일 업데이트하는것 해결하기! -->
+
 <body>
 <h4>memberBoard_memberupdate💕</h4>
 
@@ -12,13 +63,13 @@
 
 
     <!-- findAll에서 th:~ memberList를 잡아주니 읽는다.-->
-        <form action="/member/update" name="updateForm" method="post">
+        <form id="updateForm" enctype="multipart/form-data">
             <input type="hidden" id="member_id" name="memberId" th:value="${member.memberId}" readonly>
             <input type="text" id="member_email" name="memberEmail" th:value="${member.memberEmail}" readonly>
             <input type="password" id="member_password" name="memberPassword" th:value="${member.memberPassword}" >
             <input type="text" id="member_name" name="memberName" th:value="${member.memberName}" >
             <input type="text" id="member_phone" name="memberPhone" th:value="${member.memberPhone}" >
-            <input type="file" id="member_filename" name="memberFilename" th:value="${member.memberFilename}" >
+            <input type="file" id="member_file" name="memberFile">
         </form>
 
         <button th:onclick="memberUpdate([[${member.memberId}]])"> 수정_ajax </button>

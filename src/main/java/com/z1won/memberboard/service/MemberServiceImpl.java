@@ -3,6 +3,7 @@ package com.z1won.memberboard.service;
 import com.z1won.memberboard.dto.member.MemberDetailDTO;
 import com.z1won.memberboard.dto.member.MemberLoginDTO;
 import com.z1won.memberboard.dto.member.MemberSaveDTO;
+import com.z1won.memberboard.dto.member.MemberUpdateDTO;
 import com.z1won.memberboard.entity.BoardEntity;
 import com.z1won.memberboard.entity.MemberEntity;
 import com.z1won.memberboard.repository.MemberRepository;
@@ -101,7 +102,23 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDetailDTO findByMemberEmail(String memberEmail) {
+        System.out.println("MemberServiceImpl.findByMemberEmail");
         return MemberDetailDTO.toMemberDetailDTO(mr.findByMemberEmail(memberEmail));
+    }
+
+    @Override
+    public Long update(MemberUpdateDTO memberUpdateDTO) throws IOException {
+        MultipartFile memberFile = memberUpdateDTO.getMemberFile();
+        String memberFilename = memberFile.getOriginalFilename();
+        memberFilename = System.currentTimeMillis() + "-" + memberFilename;
+
+        String updatePath = "C:\\Users\\exo_g\\Documents\\SpringBoot\\memberBoard\\src\\main\\resources\\static\\upload\\" + memberFilename;
+        if (!memberFile.isEmpty()) {
+            memberFile.transferTo(new File(updatePath));
+        }
+        memberUpdateDTO.setMemberFilename(memberFilename);
+        System.out.println("MemberServiceImpl.update");
+        return mr.save(MemberEntity.toUpdateMember(memberUpdateDTO)).getId();
     }
 
 

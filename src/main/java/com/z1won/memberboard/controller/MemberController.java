@@ -3,9 +3,14 @@ package com.z1won.memberboard.controller;
 import com.z1won.memberboard.dto.member.MemberDetailDTO;
 import com.z1won.memberboard.dto.member.MemberLoginDTO;
 import com.z1won.memberboard.dto.member.MemberSaveDTO;
+import com.z1won.memberboard.dto.member.MemberUpdateDTO;
+import com.z1won.memberboard.entity.MemberEntity;
 import com.z1won.memberboard.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -98,7 +103,33 @@ public class MemberController {
         return "/member/update";
     }
 
+    @GetMapping("/{memberId}")
+    public String findById(@PathVariable Long memberId, Model model)    {
+        System.out.println("MemberController.findById");
+        MemberDetailDTO member = ms.findById(memberId);
+        model.addAttribute("member",member);
+        return "/member/findById";
+    }
 
+    //0121
+    /*@PutMapping("/{memberId}")
+    public ResponseEntity update(@RequestBody MemberUpdateDTO memberUpdateDTO)   {
+        System.out.println("MemberController.update");
+        ms.update(memberUpdateDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }*/
+
+    @PostMapping("/{memberId}")
+    @ResponseBody
+    public ResponseEntity update(@ModelAttribute MemberUpdateDTO memberUpdateDTO) throws IOException {
+
+        // 리턴은 메서드가 끝나고 나서 작동을 하는거니까 에러가 나는데
+        // sout부터 안나온건 맵핑, 매개변수쪽을 의심해보는것이 좋다...!
+        System.out.println("MemberController.update");
+        System.out.println("memberUpdateDTO = " + memberUpdateDTO);
+        ms.update(memberUpdateDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 
 
