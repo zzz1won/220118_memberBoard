@@ -41,8 +41,6 @@ public class MemberEntity extends BaseEntity {
     @Column
     private String memberFilename;
 
-    /*@Column
-    private String memberFileRoute; */  //file은 db에 저장하지 않으니까!
 
     // 가입일 수정일은 BaseEntity에서 도와준다.
     // 그럼 파일도 그렇게 되나?

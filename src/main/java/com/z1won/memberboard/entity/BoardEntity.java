@@ -1,5 +1,7 @@
 package com.z1won.memberboard.entity;
 
+import com.z1won.memberboard.dto.board.BoardSaveDTO;
+import com.z1won.memberboard.dto.board.BoardUpdateDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,8 +34,10 @@ public class BoardEntity extends BaseEntity{
     @Column
     private String boardContents;
 
-    private Integer hits;
+    @Column
+    private Integer boardHits;
 
+    @Column
     private String boardFilename;
 
 
@@ -46,6 +50,31 @@ public class BoardEntity extends BaseEntity{
     @OneToMany(mappedBy = "boardEntity",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CommentEntity> commentEntityList = new ArrayList<>();
 
+
+    // --------------------------------------------
+
+
+    public static BoardEntity toSaveEntity (BoardSaveDTO boardSaveDTO, MemberEntity memberEntity)  {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardTitle(boardSaveDTO.getBoardTitle());
+        boardEntity.setBoardContents(boardSaveDTO.getBoardContents());
+        boardEntity.setBoardFilename(boardSaveDTO.getBoardFileName());
+        boardEntity.setMemberEmail(boardSaveDTO.getBoardWriter());
+        boardEntity.setMemberEntity(memberEntity);
+
+        return boardEntity;
+    }
+
+    public static BoardEntity toUpdateEntity(BoardUpdateDTO boardUpdateDTO, MemberEntity memberEntity)  {
+        BoardEntity boardEntity = new BoardEntity();
+        boardEntity.setBoardTitle(boardUpdateDTO.getBoardTitle());
+        boardEntity.setMemberEmail(boardUpdateDTO.getBoardWriter());
+        boardEntity.setBoardContents(boardUpdateDTO.getBoardContents());
+        boardEntity.setBoardFilename(boardUpdateDTO.getBoardFilename());
+        boardEntity.setMemberEntity(memberEntity);
+
+        return boardEntity;
+    }
 
 
 

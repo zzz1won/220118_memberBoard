@@ -14,8 +14,9 @@ public class BoardSaveDTO {
     private String boardWriter;
     private String boardContents;
 
-    private String boardFileName;
     private MultipartFile boardFile;
+    private String boardFileName;
+
     private int hits;
 
 
