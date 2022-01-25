@@ -8,6 +8,20 @@
 <body>
 <h2> 💕memberBoard_boardFindAll💕 </h2>
 
+<div id = search1>
+    <form action = "/board/search" method="get">
+        <select name ="searchType">
+            <option value = "writer"> 작성자 </option>
+            <option value = "title"> 제목 </option>
+            <option value = "contents"> 내용 </option>
+        </select>
+        <input type = "text" name ="keyword" placeholder="키워드를 입력하세요">
+        <input type = "submit" value ="검색">
+    </form>
+</div>
+
+
+
     <table>
         <thead>
             <tr>

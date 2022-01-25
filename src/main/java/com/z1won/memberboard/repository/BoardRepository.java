@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     BoardEntity findByBoardTitle(String boardTitle);
 
@@ -21,4 +23,9 @@ public interface BoardRepository extends JpaRepository<BoardEntity,Long> {
     int boardHits(@Param("boardId") Long boardId);
 
 
+    List<BoardEntity> findByBoardTitleContaining(String keyword);
+
+    List<BoardEntity> findByBoardContentsContaining(String keyword);
+
+    List<BoardEntity> findByMemberEmailContaining(String keyword);
 }

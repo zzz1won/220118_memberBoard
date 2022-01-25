@@ -1,9 +1,11 @@
 package com.z1won.memberboard.entity;
 
+import com.z1won.memberboard.dto.comment.CommentSaveDTO;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.lang.reflect.Member;
 
 @Entity
 @Getter
@@ -28,6 +30,15 @@ public class CommentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private BoardEntity boardEntity;
+
+
+    public static CommentEntity toSaveEntity (CommentSaveDTO commentSaveDTO, BoardEntity boardEntity, MemberEntity memberEntity)    {
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setBoardEntity(boardEntity);
+        commentEntity.setMemberEntity(memberEntity);
+        commentEntity.setCommentContents(commentSaveDTO.getCommentContents());
+        return commentEntity;
+    }
 }
 
 
