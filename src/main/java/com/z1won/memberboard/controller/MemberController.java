@@ -1,13 +1,15 @@
 package com.z1won.memberboard.controller;
 
-import com.z1won.memberboard.dto.member.MemberDetailDTO;
-import com.z1won.memberboard.dto.member.MemberLoginDTO;
-import com.z1won.memberboard.dto.member.MemberSaveDTO;
-import com.z1won.memberboard.dto.member.MemberUpdateDTO;
+import com.z1won.memberboard.common.PagingConst;
+import com.z1won.memberboard.dto.board.BoardPageingDTO;
+import com.z1won.memberboard.dto.member.*;
 import com.z1won.memberboard.entity.MemberEntity;
 import com.z1won.memberboard.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -131,6 +133,17 @@ public class MemberController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @GetMapping("/")
+    public String paging (@PageableDefault(page = 1) Pageable pageable, Model model)   {
+        Page<MemberPagingDTO> memberList = ms.paging(pageable);
+        model.addAttribute("memberList", memberList);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber()/ PagingConst.BLOCK_LIMIT)))-1) * PagingConst.BLOCK_LIMIT + 1;
+        int endPage = ((startPage + PagingConst.BLOCK_LIMIT -1) < memberList.getTotalPages()) ? startPage + PagingConst.BLOCK_LIMIT - 1 : memberList.getTotalPages();
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage",endPage);
+        System.out.println("MemberController.paging");
+        return "/member/paging";
+    }
 
 
 }

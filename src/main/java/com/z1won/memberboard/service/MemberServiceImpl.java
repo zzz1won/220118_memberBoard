@@ -1,13 +1,16 @@
 package com.z1won.memberboard.service;
 
-import com.z1won.memberboard.dto.member.MemberDetailDTO;
-import com.z1won.memberboard.dto.member.MemberLoginDTO;
-import com.z1won.memberboard.dto.member.MemberSaveDTO;
-import com.z1won.memberboard.dto.member.MemberUpdateDTO;
+import com.z1won.memberboard.common.PagingConst;
+import com.z1won.memberboard.dto.board.BoardPageingDTO;
+import com.z1won.memberboard.dto.member.*;
 import com.z1won.memberboard.entity.BoardEntity;
 import com.z1won.memberboard.entity.MemberEntity;
 import com.z1won.memberboard.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -119,6 +122,19 @@ public class MemberServiceImpl implements MemberService {
         memberUpdateDTO.setMemberFilename(memberFilename);
         System.out.println("MemberServiceImpl.update");
         return mr.save(MemberEntity.toUpdateMember(memberUpdateDTO)).getId();
+    }
+
+    @Override
+    public Page<MemberPagingDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber();
+        page = (page == 1)? 0:(page - 1);
+        Page<MemberEntity> memberEntities = mr.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+        Page<MemberPagingDTO> memberList = memberEntities.map (
+                member -> new MemberPagingDTO(member.getId(),
+                        member.getMemberEmail(),
+                        member.getMemberName())
+        );
+        return memberList;
     }
 
 
